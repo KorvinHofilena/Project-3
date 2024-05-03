@@ -6,6 +6,7 @@
 .page__section {
   max-width: 880px;
   width: 100%;
+  box-sizing: border-box;
   position: relative;
   margin: 0 auto;
 }
@@ -65,6 +66,13 @@
   margin: 0;
 }
 
+@media screen and (max-width: 1100px) {
+  .page__section {
+    margin: 0 20px;
+    max-width: calc(100% - 40px);
+  }
+}
+
 .profile__image {
   height: 120px;
   width: 120px;
@@ -75,6 +83,7 @@
 }
 
 .cards {
+  margin-top: 30px;
 }
 
 .card__list {
@@ -87,9 +96,19 @@
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  grid-gap: 20px 18px;
+  list-style-type: none;
+  border-radius: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+@media xcreen and (max-width: 560px) {
+  .card {
+    padding: 15px 0 18px;
+  }
 }
 
 .card__image {
@@ -113,4 +132,28 @@
   background: transparent url(../images/Like\ Inactive.svg) center no-repeat;
   width: 21px;
   height: 18px;
+}
+
+@media screen and (max-width: 480px) {
+  .profile {
+    background-color: rgb(0, 0, 0);
+    flex-direction: column;
+  }
+
+  .profile__info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .profile__description {
+    width: 100%;
+    text-align: center;
+  }
+
+  .profile__add-button {
+    margin: 0;
+    width: 100%;
+  }
 }
