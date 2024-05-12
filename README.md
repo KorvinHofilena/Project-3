@@ -10,6 +10,4 @@ This project was made to partray adaptability to all screen sizes and functional
 
 **Video Link**
 
-The way you'll do this at work is by exporting images directly from Figma — we recommend doing that to practice more. Don't forget to optimize them [here](https://tinypng.com/), so your project loads faster.
-
-Good luck and have fun!
+https://drive.google.com/file/d/1kXZwSBtEOFoe6D3Yo4dHsSJX-nvo9HNI/view?usp=drive_link
