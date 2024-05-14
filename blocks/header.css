@@ -1,0 +1,8 @@
+.header {
+  margin-top: 45px;
+}
+
+.header__border-bottom {
+  border-bottom: 1px solid #545454;
+  margin-top: 50px;
+}

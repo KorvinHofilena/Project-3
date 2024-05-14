@@ -1,0 +1,131 @@
+.profile {
+  display: flex;
+  padding-top: 40px;
+}
+
+.profile__image {
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-position: center;
+  margin-right: 24px;
+}
+
+.profile__info {
+  display: grid;
+  grid-template-areas: "title button";
+  grid-template-columns: 1fr min-content;
+  align-items: center;
+  width: 100%;
+}
+
+.profile__title {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 48px;
+  font-weight: 500;
+  grid-area: title;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile__edit-button {
+  background: transparent url("../images/Profile edit button.svg") center
+    no-repeat;
+  background-size: cover;
+  height: 24px;
+  width: 24px;
+  grid-area: button;
+  border: none;
+  cursor: pointer;
+  margin-right: 167px;
+  margin-top: 8px;
+  transition: transform 0.3s ease;
+}
+
+.profile__edit-button:hover {
+  transform: scale(1.1);
+  opacity: 0px;
+}
+
+.profile__description {
+  grid-area: description;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  margin: 0;
+  text-align: left;
+  grid-column: 1 / -1;
+  margin-bottom: 35px;
+}
+
+.profile__add-button {
+  background: transparent url("../images/added vector.svg") center no-repeat;
+  width: 282px;
+  height: 50px;
+  border: 2px solid white;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: transform 0.3s ease;
+}
+
+.profile__add-button:hover {
+  transform: scale(1.1);
+  opacity: 0px;
+}
+
+@media screen and (max-width: 320px) {
+  .profile {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 45px;
+  }
+
+  .profile__image {
+    margin-left: 30px;
+    margin-top: 20px;
+  }
+
+  .profile_info {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .profile__title {
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    margin-top: 25px;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    word-wrap: break-word;
+    margin-left: 35px;
+  }
+
+  .profile__edit-button {
+    width: 18px;
+    height: 18px;
+    margin-top: 25px;
+    margin-left: 30px;
+  }
+
+  .profile__description {
+    text-align: justify;
+    width: 100%;
+    margin-left: 120px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+  }
+
+  .profile__add-button {
+    text-align: center;
+    margin-bottom: 0;
+  }
+}

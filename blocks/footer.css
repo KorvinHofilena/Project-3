@@ -1,0 +1,17 @@
+.footer {
+  display: flex;
+  justify-content: flex-start;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  color: rgba(84, 84, 84, 1);
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: left;
+}
+
+@media screen and (max-width: 320px) {
+  .footer {
+    justify-content: flex-start;
+    padding-left: 16px;
+    margin-top: 15px;
+  }
+}
