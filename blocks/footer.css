@@ -8,10 +8,9 @@
   text-align: left;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 800px) {
   .footer {
-    justify-content: flex-start;
-    padding-left: 16px;
+    padding-left: 25px;
     margin-top: 15px;
   }
 }
