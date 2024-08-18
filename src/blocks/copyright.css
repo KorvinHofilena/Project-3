@@ -1,0 +1,16 @@
+.copyright {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.78px;
+  text-align: left;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+@media screen and (max-width: 800px) {
+  .copyright {
+    width: 282px;
+    font-size: 14px;
+    line-height: 16.94px;
+  }
+}
