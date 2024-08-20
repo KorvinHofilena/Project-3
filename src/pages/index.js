@@ -29,13 +29,6 @@ const profileDescriptionInput = document.getElementById(
 
 const userInfo = new UserInfo(userProfileSelectors);
 
-profileEditButton.addEventListener("click", () => {
-  const userData = userInfo.getUserInfo();
-  profileTitleInput.value = userData.name;
-  profileDescriptionInput.value = userData.job;
-  profilePopup.open();
-});
-
 const profilePopup = new PopupWithForm("#profile-edit-modal", {
   handleFormSubmit: (formData) => {
     userInfo.setUserInfo({
@@ -83,8 +76,15 @@ const cardSection = new Section(
 
 cardSection.renderItems();
 
+profileEditButton.addEventListener("click", () => {
+  const userData = userInfo.getUserInfo();
+  profileTitleInput.value = userData.name;
+  profileDescriptionInput.value = userData.job;
+  profilePopup.open();
+});
+
 addPlaceButton.addEventListener("click", () => {
-  addPlaceFormValidator.toggleButtonState();
+  addPlaceFormValidator.resetValidation();
   cardPopup.open();
 });
 
