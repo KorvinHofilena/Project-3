@@ -11,9 +11,17 @@ class UserInfo {
     };
   }
 
-  setUserInfo({ name, about }) {
-    if (this._nameElement) this._nameElement.textContent = name;
-    if (this._jobElement) this._jobElement.textContent = about;
+  setUserInfo({ name, job }) {
+    console.log("Updating Name:", name, "Updating Job:", job);
+    console.log("Name Element:", this._nameElement);
+    console.log("Job Element:", this._jobElement);
+
+    if (name && this._nameElement) {
+      this._nameElement.textContent = name;
+    }
+    if (job && this._jobElement) {
+      this._jobElement.textContent = job;
+    }
   }
 }
 

@@ -30,7 +30,10 @@ const userInfo = new UserInfo(userProfileSelectors);
 
 const profilePopup = new PopupWithForm("#profile-edit-modal", {
   handleFormSubmit: (formData) => {
-    userInfo.setUserInfo(formData);
+    userInfo.setUserInfo({
+      name: formData.name,
+      job: formData.about,
+    });
     profilePopup.close();
   },
 });
