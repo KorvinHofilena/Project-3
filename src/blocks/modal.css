@@ -123,24 +123,6 @@
   color: #ffffff;
 }
 
-.modal__close {
-  cursor: pointer;
-  border: none;
-  position: absolute;
-  bottom: calc(100% + 5px);
-  left: calc(100% + 5px);
-  width: 40px;
-  height: 40px;
-  background-image: url(../images/Close\ Icon.svg);
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: contain;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-  font-size: 24px;
-  color: #ffffff;
-}
-
 .modal__close:hover {
   opacity: 0.6;
 }
@@ -157,9 +139,9 @@
 }
 
 @media screen and (max-width: 800px) {
-  .modal__close {
-    width: 30px;
-    height: 30px;
+  .modal__close-button {
+    width: 26px;
+    height: 26px;
     margin-left: -40px;
     margin-bottom: 15px;
   }
