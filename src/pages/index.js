@@ -6,16 +6,25 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
 import {
-  initialCards,
   validationConfig,
   cardTemplateSelector,
   containerSelector,
 } from "../utils/constants.js";
 
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1/cohortId",
+  headers: {
+    authorization: "YOUR_TOKEN_HERE",
+    "Content-Type": "application/json",
+  },
+});
+
 const userProfileSelectors = {
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
+  avatarSelector: ".profile__avatar",
 };
 
 const profileEditButton = document.getElementById("profile-edit-button");
@@ -29,26 +38,42 @@ const profileDescriptionInput = document.getElementById(
 
 const userInfo = new UserInfo(userProfileSelectors);
 
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData);
+    cardSection.renderItems(cards);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
 const profilePopup = new PopupWithForm("#profile-edit-modal", {
   handleFormSubmit: (formData) => {
-    userInfo.setUserInfo({
-      name: formData.name,
-      job: formData.about,
-    });
-    profilePopup.close();
+    profilePopup.renderLoading(true);
+    api
+      .setUserInfo(formData)
+      .then((data) => {
+        userInfo.setUserInfo(data);
+        profilePopup.close();
+      })
+      .catch((err) => console.error(err))
+      .finally(() => profilePopup.renderLoading(false));
   },
 });
 profilePopup.setEventListeners();
 
 const cardPopup = new PopupWithForm("#add-place-modal", {
   handleFormSubmit: (formData) => {
-    const cardElement = createCard({
-      name: formData.title,
-      link: formData.link,
-    });
-
-    cardSection.addItem(cardElement);
-    cardPopup.close();
+    cardPopup.renderLoading(true);
+    api
+      .addNewCard(formData)
+      .then((cardData) => {
+        const cardElement = createCard(cardData);
+        cardSection.addItem(cardElement);
+        cardPopup.close();
+      })
+      .catch((err) => console.error(err))
+      .finally(() => cardPopup.renderLoading(false));
   },
 });
 cardPopup.setEventListeners();
@@ -65,7 +90,7 @@ function createCard(data) {
 
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: [],
     renderer: (item) => {
       const cardElement = createCard(item);
       cardSection.addItem(cardElement);
@@ -73,8 +98,6 @@ const cardSection = new Section(
   },
   containerSelector
 );
-
-cardSection.renderItems();
 
 profileEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
