@@ -1,7 +1,8 @@
 class UserInfo {
-  constructor({ nameSelector, jobSelector }) {
+  constructor({ nameSelector, jobSelector, api }) {
     this._nameElement = document.querySelector(nameSelector);
     this._jobElement = document.querySelector(jobSelector);
+    this._api = api;
   }
 
   getUserInfo() {
@@ -22,6 +23,15 @@ class UserInfo {
     if (job && this._jobElement) {
       this._jobElement.textContent = job;
     }
+  }
+
+  updateUserInfo({ name, job }) {
+    this._api
+      .updateUserInfo({ name, job })
+      .then((res) => {
+        this.setUserInfo({ name: res.name, job: res.about });
+      })
+      .catch((err) => console.error(`Error updating user info: ${err}`));
   }
 }
 
