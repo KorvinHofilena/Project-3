@@ -1,5 +1,3 @@
-// src/components/Section.js
-
 class Section {
   constructor({ items, renderer }, containerSelector) {
     this._renderedItems = items;

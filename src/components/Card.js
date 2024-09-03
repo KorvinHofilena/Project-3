@@ -1,5 +1,3 @@
-// src/components/Card.js
-
 class Card {
   constructor(data, templateSelector, handleCardClick) {
     this._name = data.name;
