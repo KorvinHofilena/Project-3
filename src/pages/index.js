@@ -14,9 +14,9 @@ import {
 } from "../utils/constants.js";
 
 const api = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1/cohortId",
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
-    authorization: "YOUR_TOKEN_HERE",
+    authorization: "3fc0478b-e0b7-4d6b-a203-6dc78462ac26",
     "Content-Type": "application/json",
   },
 });
@@ -38,33 +38,32 @@ const profileDescriptionInput = document.getElementById(
 
 const userInfo = new UserInfo(userProfileSelectors);
 
-Promise.all([api.getUserInfo(), api.getInitialCards()])
-  .then(([userData, cards]) => {
-    userInfo.setUserInfo(userData);
-    cardSection.renderItems(cards);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+const cardSection = new Section(
+  {
+    items: [],
+    renderer: (item) => {
+      const cardElement = createCard(item);
+      cardSection.addItem(cardElement);
+    },
+  },
+  containerSelector
+);
 
 const profilePopup = new PopupWithForm("#profile-edit-modal", {
   handleFormSubmit: (formData) => {
-    profilePopup.renderLoading(true);
     api
       .setUserInfo(formData)
       .then((data) => {
         userInfo.setUserInfo(data);
         profilePopup.close();
       })
-      .catch((err) => console.error(err))
-      .finally(() => profilePopup.renderLoading(false));
+      .catch((err) => console.error(err));
   },
 });
 profilePopup.setEventListeners();
 
 const cardPopup = new PopupWithForm("#add-place-modal", {
   handleFormSubmit: (formData) => {
-    cardPopup.renderLoading(true);
     api
       .addNewCard(formData)
       .then((cardData) => {
@@ -72,8 +71,7 @@ const cardPopup = new PopupWithForm("#add-place-modal", {
         cardSection.addItem(cardElement);
         cardPopup.close();
       })
-      .catch((err) => console.error(err))
-      .finally(() => cardPopup.renderLoading(false));
+      .catch((err) => console.error(err));
   },
 });
 cardPopup.setEventListeners();
@@ -87,17 +85,6 @@ function createCard(data) {
   });
   return card.generateCard();
 }
-
-const cardSection = new Section(
-  {
-    items: [],
-    renderer: (item) => {
-      const cardElement = createCard(item);
-      cardSection.addItem(cardElement);
-    },
-  },
-  containerSelector
-);
 
 profileEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
@@ -119,3 +106,12 @@ profileEditFormValidator.enableValidation();
 
 const addPlaceFormValidator = new FormValidator(validationConfig, addPlaceForm);
 addPlaceFormValidator.enableValidation();
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData);
+    cardSection.renderItems(cards);
+  })
+  .catch((err) => {
+    console.error("Error fetching data:", err);
+  });

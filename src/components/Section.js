@@ -1,3 +1,5 @@
+// src/components/Section.js
+
 class Section {
   constructor({ items, renderer }, containerSelector) {
     this._renderedItems = items;
@@ -6,7 +8,6 @@ class Section {
   }
 
   addItem(element) {
-    console.log("Adding item:", element);
     this._container.prepend(element);
   }
 
@@ -14,9 +15,9 @@ class Section {
     this._container.innerHTML = "";
   }
 
-  renderItems() {
+  renderItems(items = this._renderedItems) {
     this.clear();
-    this._renderedItems.forEach((item) => {
+    items.forEach((item) => {
       this._renderer(item);
     });
   }
