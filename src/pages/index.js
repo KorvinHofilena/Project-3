@@ -11,6 +11,7 @@ import {
   validationConfig,
   cardTemplateSelector,
   containerSelector,
+  userProfileSelectors,
 } from "../utils/constants.js";
 
 const api = new Api({
@@ -20,12 +21,6 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-
-const userProfileSelectors = {
-  nameSelector: ".profile__title",
-  jobSelector: ".profile__description",
-  avatarSelector: ".profile__avatar",
-};
 
 const profileEditButton = document.getElementById("profile-edit-button");
 const addPlaceButton = document.querySelector(".profile__add-button");
@@ -37,6 +32,22 @@ const profileDescriptionInput = document.getElementById(
 );
 
 const userInfo = new UserInfo(userProfileSelectors);
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData);
+    cardSection.renderItems(cards);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+function createCard(data) {
+  const card = new Card(data, cardTemplateSelector, () => {
+    imagePopup.open(data);
+  });
+  return card.generateCard();
+}
 
 const cardSection = new Section(
   {
@@ -53,8 +64,8 @@ const profilePopup = new PopupWithForm("#profile-edit-modal", {
   handleFormSubmit: (formData) => {
     api
       .setUserInfo(formData)
-      .then((data) => {
-        userInfo.setUserInfo(data);
+      .then((userData) => {
+        userInfo.setUserInfo(userData);
         profilePopup.close();
       })
       .catch((err) => console.error(err));
@@ -79,13 +90,6 @@ cardPopup.setEventListeners();
 const imagePopup = new PopupWithImage("#image-view-modal");
 imagePopup.setEventListeners();
 
-function createCard(data) {
-  const card = new Card(data, cardTemplateSelector, () => {
-    imagePopup.open(data);
-  });
-  return card.generateCard();
-}
-
 profileEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
   profileTitleInput.value = userData.name;
@@ -106,12 +110,3 @@ profileEditFormValidator.enableValidation();
 
 const addPlaceFormValidator = new FormValidator(validationConfig, addPlaceForm);
 addPlaceFormValidator.enableValidation();
-
-Promise.all([api.getUserInfo(), api.getInitialCards()])
-  .then(([userData, cards]) => {
-    userInfo.setUserInfo(userData);
-    cardSection.renderItems(cards);
-  })
-  .catch((err) => {
-    console.error("Error fetching data:", err);
-  });
