@@ -1,8 +1,19 @@
 class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleDeleteClick,
+    handleLikeClick
+  ) {
     this._data = data;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeClick = handleLikeClick;
+    this._likes = data.likes || [];
+    this._id = data._id || null;
+    this._userId = data.userId || null;
   }
 
   _getTemplate() {
@@ -13,21 +24,47 @@ class Card {
     return cardElement;
   }
 
-  _handleDelete = () => {
-    this._element.remove();
-    this._element = null;
-  };
-
-  _handleLikeButton = () => {
-    this._likeButton.classList.toggle("card__like-button_active");
-  };
-
   _setEventListeners() {
     this._cardImage.addEventListener("click", () => {
-      this._handleImageClick(this._data);
+      this._handleImageClick(this._data.name, this._data.link);
     });
-    this._deleteButton.addEventListener("click", this._handleDelete);
-    this._likeButton.addEventListener("click", this._handleLikeButton);
+
+    if (this._id) {
+      this._deleteButton.addEventListener("click", () => {
+        this._handleDeleteClick(this._id, this);
+      });
+
+      this._likeButton.addEventListener("click", () => {
+        this._handleLikeClick(this._id, this._isLiked())
+          .then((updatedData) => {
+            this._likes = updatedData.likes;
+            this._toggleLikeButton();
+          })
+          .catch((err) => console.error(`Error liking card: ${err}`));
+      });
+    } else {
+      console.warn(
+        "This card does not have a valid server ID, so liking/deleting is disabled."
+      );
+      this._likeButton.disabled = true;
+    }
+  }
+
+  _isLiked() {
+    return this._likes.some((like) => like._id === this._userId);
+  }
+
+  _toggleLikeButton() {
+    if (this._isLiked()) {
+      this._likeButton.classList.add("card__like-button_active");
+    } else {
+      this._likeButton.classList.remove("card__like-button_active");
+    }
+  }
+
+  _handleDelete() {
+    this._element.remove();
+    this._element = null;
   }
 
   generateCard() {
@@ -39,6 +76,8 @@ class Card {
     this._cardImage.src = this._data.link;
     this._cardImage.alt = this._data.name;
     this._element.querySelector(".card__title").textContent = this._data.name;
+
+    this._toggleLikeButton();
 
     this._setEventListeners();
 

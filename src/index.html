@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Around the U.S</title>
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body class="page">
     <div class="page__content">
@@ -17,11 +18,14 @@
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            src="<%=require('./images/Avatar.jpg')%>"
-            class="profile__image"
-            alt="Profile Avatar"
-          />
+          <div class="profile__avatar-container">
+            <img
+              src="<%=require('./images/Avatar.jpg')%>"
+              class="profile__image"
+              alt="Profile Avatar"
+            />
+            <div class="profile__avatar-edit"></div>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
@@ -33,6 +37,7 @@
           </div>
           <button type="button" class="profile__add-button"></button>
         </section>
+
         <section class="cards page__section">
           <ul class="cards__list"></ul>
         </section>
@@ -96,6 +101,25 @@
             required
           />
           <span id="place-link-input-error" class="modal__error"></span>
+          <button class="modal__button" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="avatar-edit-modal">
+      <div class="modal__container">
+        <button type="button" class="modal__close-button">✕</button>
+        <h2 class="modal__heading">Change profile picture</h2>
+        <form class="modal__form" id="avatar-edit-form">
+          <input
+            type="url"
+            class="modal__input"
+            id="avatar-url-input"
+            name="avatar"
+            placeholder="Image link"
+            required
+          />
+          <span id="avatar-url-input-error" class="modal__error"></span>
           <button class="modal__button" type="submit">Save</button>
         </form>
       </div>
