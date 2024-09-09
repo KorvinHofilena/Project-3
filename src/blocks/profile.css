@@ -105,7 +105,7 @@
 }
 
 .profile__avatar-edit::before {
-  content: url("../images/Edit\ profile\ button.svg");
+  content: url("../images/Editprofilebutton.svg");
   width: 24px;
   height: 24px;
 }
