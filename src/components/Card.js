@@ -29,7 +29,7 @@ class Card {
       this._handleImageClick(this._data.name, this._data.link);
     });
 
-    if (this._id) {
+    if (this._id && this._id.length >= 20) {
       this._deleteButton.addEventListener("click", () => {
         this._handleDeleteClick(this._id, this);
       });
@@ -37,16 +37,27 @@ class Card {
       this._likeButton.addEventListener("click", () => {
         this._handleLikeClick(this._id, this._isLiked())
           .then((updatedData) => {
-            this._likes = updatedData.likes;
+            if (updatedData && Array.isArray(updatedData.likes)) {
+              this._likes = updatedData.likes;
+            } else {
+              if (this._isLiked()) {
+                this._likes = this._likes.filter(
+                  (like) => like._id !== this._userId
+                );
+              } else {
+                this._likes.push({ _id: this._userId });
+              }
+            }
             this._toggleLikeButton();
           })
           .catch((err) => console.error(`Error liking card: ${err}`));
       });
     } else {
       console.warn(
-        "This card does not have a valid server ID, so liking/deleting is disabled."
+        "This card does not have a valid server ID, so deleting and liking are disabled."
       );
       this._likeButton.disabled = true;
+      this._deleteButton.disabled = true;
     }
   }
 
@@ -78,7 +89,6 @@ class Card {
     this._element.querySelector(".card__title").textContent = this._data.name;
 
     this._toggleLikeButton();
-
     this._setEventListeners();
 
     return this._element;

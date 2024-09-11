@@ -1,5 +1,4 @@
 import "../pages/index.css";
-
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
@@ -13,7 +12,6 @@ import {
   cardTemplateSelector,
   containerSelector,
   userProfileSelectors,
-  initialCards,
 } from "../utils/constants.js";
 
 const api = new Api({
@@ -37,7 +35,11 @@ const avatarEditButton = document.querySelector(".profile__avatar-edit");
 const avatarEditForm = document.getElementById("avatar-edit-form");
 const avatarUrlInput = document.getElementById("avatar-url-input");
 
-const userInfo = new UserInfo(userProfileSelectors);
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
+});
 
 function handleCardClick(name, link) {
   imagePopup.open({ name, link });
@@ -48,6 +50,7 @@ function handleDeleteCard(cardId, card) {
     console.error("Card ID is invalid or missing.");
     return;
   }
+
   confirmationPopup.open(() => {
     api
       .deleteCard(cardId)
@@ -92,8 +95,11 @@ const cardSection = new Section(
 );
 
 function renderAllCards(apiCards) {
-  const allCards = [...initialCards, ...apiCards];
-  cardSection.renderItems(allCards);
+  if (apiCards.length === 0) {
+    console.log("No cards to display.");
+  } else {
+    cardSection.renderItems(apiCards);
+  }
 }
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
