@@ -36,8 +36,11 @@ class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    this._form.reset();
-    this.updateSubmitButtonText(this._submitButtonText);
+    this._form.reset(); // Reset form when the popup is closed
+  }
+
+  resetSubmitButtonText() {
+    this.updateSubmitButtonText(this._submitButtonText); // Reset button text to default
   }
 }
 
