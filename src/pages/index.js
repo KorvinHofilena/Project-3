@@ -41,6 +41,20 @@ const userInfo = new UserInfo({
   avatarSelector: ".profile__image",
 });
 
+const profileEditFormValidator = new FormValidator(
+  validationConfig,
+  profileEditForm
+);
+const addPlaceFormValidator = new FormValidator(validationConfig, addPlaceForm);
+const avatarEditFormValidator = new FormValidator(
+  validationConfig,
+  avatarEditForm
+);
+
+profileEditFormValidator.enableValidation();
+addPlaceFormValidator.enableValidation();
+avatarEditFormValidator.enableValidation();
+
 function handleCardClick(name, link) {
   imagePopup.open({ name, link });
 }
@@ -55,7 +69,7 @@ function handleDeleteCard(cardId, card) {
     api
       .deleteCard(cardId)
       .then(() => {
-        card._handleDelete();
+        card.handleDelete();
         confirmationPopup.close();
       })
       .catch((err) => {
@@ -104,7 +118,11 @@ function renderAllCards(apiCards) {
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([userData, apiCards]) => {
-    userInfo.setUserInfo(userData);
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+      avatar: userData.avatar,
+    });
     renderAllCards(apiCards);
   })
   .catch((err) => {
@@ -115,9 +133,16 @@ const profilePopup = new PopupWithForm("#profile-edit-modal", {
   handleFormSubmit: (formData) => {
     profilePopup.updateSubmitButtonText("Saving...");
     api
-      .setUserInfo(formData)
+      .setUserInfo({
+        name: formData.name,
+        about: formData.about,
+      })
       .then((userData) => {
-        userInfo.setUserInfo(userData);
+        userInfo.setUserInfo({
+          name: userData.name,
+          job: userData.about,
+          avatar: userData.avatar,
+        });
         profilePopup.close();
       })
       .catch((err) => {
@@ -150,19 +175,17 @@ const cardPopup = new PopupWithForm("#add-place-modal", {
 });
 cardPopup.setEventListeners();
 
-const imagePopup = new PopupWithImage("#image-view-modal");
-imagePopup.setEventListeners();
-
-const confirmationPopup = new PopupWithConfirmation("#delete-card-modal");
-confirmationPopup.setEventListeners();
-
 const avatarPopup = new PopupWithForm("#avatar-edit-modal", {
   handleFormSubmit: (formData) => {
     avatarPopup.updateSubmitButtonText("Saving...");
     api
       .setUserAvatar(formData)
       .then((userData) => {
-        document.querySelector(".profile__image").src = userData.avatar;
+        userInfo.setUserInfo({
+          name: userInfo.getUserInfo().name,
+          job: userInfo.getUserInfo().job,
+          avatar: userData.avatar,
+        });
         avatarPopup.close();
       })
       .catch((err) => {
@@ -174,6 +197,12 @@ const avatarPopup = new PopupWithForm("#avatar-edit-modal", {
   },
 });
 avatarPopup.setEventListeners();
+
+const imagePopup = new PopupWithImage("#image-view-modal");
+imagePopup.setEventListeners();
+
+const confirmationPopup = new PopupWithConfirmation("#delete-card-modal");
+confirmationPopup.setEventListeners();
 
 profileEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
@@ -192,18 +221,3 @@ avatarEditButton.addEventListener("click", () => {
   avatarEditFormValidator.resetValidation();
   avatarPopup.open();
 });
-
-const profileEditFormValidator = new FormValidator(
-  validationConfig,
-  profileEditForm
-);
-profileEditFormValidator.enableValidation();
-
-const addPlaceFormValidator = new FormValidator(validationConfig, addPlaceForm);
-addPlaceFormValidator.enableValidation();
-
-const avatarEditFormValidator = new FormValidator(
-  validationConfig,
-  avatarEditForm
-);
-avatarEditFormValidator.enableValidation();
