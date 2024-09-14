@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
             avatar: userData.avatar,
           });
           profilePopup.close();
+          profileEditForm.reset();
         })
         .catch((err) => {
           console.error(`Error updating profile: ${err}`);
@@ -168,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const cardElement = createCard(cardData);
           cardSection.addItem(cardElement);
           cardPopup.close();
+          addPlaceForm.reset();
         })
         .catch((err) => {
           console.error(`Error adding new card: ${err}`);
@@ -191,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
             avatar: userData.avatar,
           });
           avatarPopup.close();
+          avatarEditForm.reset();
         })
         .catch((err) => {
           console.error(`Error updating avatar: ${err}`);
