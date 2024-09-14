@@ -12,17 +12,19 @@
         <img
           src="<%=require('./images/Logo.svg')%>"
           class="header__image"
-          alt="Profile Title Logo"
+          alt="Site Logo"
         />
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            src="<%=require('./images/Avatar.jpg')%>"
-            class="profile__image"
-            alt="Profile Avatar"
-          />
-
+          <div class="profile__avatar-container">
+            <img
+              src="<%=require('./images/Avatar.jpg')%>"
+              class="profile__image"
+              alt="Profile Avatar"
+            />
+            <div class="profile__avatar-edit"></div>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
@@ -34,6 +36,7 @@
           </div>
           <button type="button" class="profile__add-button"></button>
         </section>
+
         <section class="cards page__section">
           <ul class="cards__list"></ul>
         </section>
@@ -45,9 +48,9 @@
 
     <div class="modal" id="profile-edit-modal">
       <div class="modal__container">
-        <button type="button" class="modal__close-button"></button>
-        <h2 class="modal__heading">Edit profile</h2>
-        <form class="modal__form" id="profile-edit-form">
+        <button type="button" class="modal__close-button">✕</button>
+        <h2 class="modal__heading">Edit Profile</h2>
+        <form class="modal__form" id="profile-edit-form" name="profile-form">
           <input
             type="text"
             class="modal__input"
@@ -57,7 +60,6 @@
             required
           />
           <span id="profile-title-input-error" class="modal__error"></span>
-
           <input
             type="text"
             class="modal__input"
@@ -70,7 +72,6 @@
             id="profile-description-input-error"
             class="modal__error"
           ></span>
-
           <button class="modal__button" type="submit">Save</button>
         </form>
       </div>
@@ -78,9 +79,9 @@
 
     <div class="modal" id="add-place-modal">
       <div class="modal__container">
-        <button type="button" class="modal__close-button"></button>
-        <h2 class="modal__heading">New place</h2>
-        <form class="modal__form" id="add-place-form">
+        <button type="button" class="modal__close-button">✕</button>
+        <h2 class="modal__heading">New Place</h2>
+        <form class="modal__form" id="add-place-form" name="card-form">
           <input
             type="text"
             class="modal__input"
@@ -90,7 +91,6 @@
             required
           />
           <span id="place-title-input-error" class="modal__error"></span>
-
           <input
             type="url"
             class="modal__input"
@@ -100,7 +100,25 @@
             required
           />
           <span id="place-link-input-error" class="modal__error"></span>
+          <button class="modal__button" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
 
+    <div class="modal" id="avatar-edit-modal">
+      <div class="modal__container">
+        <button type="button" class="modal__close-button">✕</button>
+        <h2 class="modal__heading">Change profile picture</h2>
+        <form class="modal__form" id="avatar-edit-form" name="avatar-form">
+          <input
+            type="url"
+            class="modal__input"
+            id="avatar-url-input"
+            name="avatar"
+            placeholder="Image link"
+            required
+          />
+          <span id="avatar-url-input-error" class="modal__error"></span>
           <button class="modal__button" type="submit">Save</button>
         </form>
       </div>
@@ -108,7 +126,12 @@
 
     <div class="modal" id="image-view-modal">
       <div class="modal__image-container">
-        <img class="modal__image" id="modal-image" src="" alt="" />
+        <img
+          class="modal__image"
+          id="modal-image"
+          src=""
+          alt="Selected Image"
+        />
         <div class="modal__caption" id="modal-caption"></div>
         <button
           class="modal__close modal__close-button"
@@ -116,6 +139,14 @@
         >
           ✕
         </button>
+      </div>
+    </div>
+
+    <div class="modal" id="delete-card-modal">
+      <div class="modal__container">
+        <button type="button" class="modal__close-button">✕</button>
+        <h2 class="modal__heading">Are you sure?</h2>
+        <button class="modal__button" id="confirm-delete-button">Yes</button>
       </div>
     </div>
 

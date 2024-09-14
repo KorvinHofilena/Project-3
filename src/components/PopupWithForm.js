@@ -6,15 +6,21 @@ class PopupWithForm extends Popup {
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popupElement.querySelector(".modal__form");
     this._inputList = this._form.querySelectorAll(".modal__input");
+    this._submitButton = this._form.querySelector(".modal__button");
+    this._submitButtonText = this._submitButton.textContent;
     this._isEventListenerAdded = false;
   }
 
   _getInputValues() {
-    this._formValues = {};
+    const formValues = {};
     this._inputList.forEach((input) => {
-      this._formValues[input.name] = input.value;
+      formValues[input.name] = input.value;
     });
-    return this._formValues;
+    return formValues;
+  }
+
+  updateSubmitButtonText(text) {
+    this._submitButton.textContent = text;
   }
 
   setEventListeners() {
@@ -23,14 +29,18 @@ class PopupWithForm extends Popup {
       this._form.addEventListener("submit", (evt) => {
         evt.preventDefault();
         this._handleFormSubmit(this._getInputValues());
-        this._form.reset();
       });
       this._isEventListenerAdded = true;
     }
   }
 
-  open() {
-    super.open();
+  close() {
+    super.close();
+    this._form.reset(); // Reset form when the popup is closed
+  }
+
+  resetSubmitButtonText() {
+    this.updateSubmitButtonText(this._submitButtonText); // Reset button text to default
   }
 }
 

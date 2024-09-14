@@ -11,7 +11,10 @@ export const initialCards = [
     name: "Bald Mountains",
     link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg",
   },
-  { name: "Latemar", link: "https://code.s3.yandex.net/web-code/latemar.jpg" },
+  {
+    name: "Latemar",
+    link: "https://code.s3.yandex.net/web-code/latemar.jpg",
+  },
   {
     name: "Vanoise National Park",
     link: "https://code.s3.yandex.net/web-code/vanoise.jpg",
